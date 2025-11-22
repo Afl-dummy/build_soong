@@ -300,3 +300,7 @@ org\.ifaa\.aidl.*
 ###################################################
 # Lineage HALs
 vendor\.lineage\..*
+
+###################################################
+# Camera Extensions
+com.camera.camera2.extensions.*
