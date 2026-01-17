@@ -175,7 +175,7 @@ var BannerVars = []string{
 	"PRODUCT_IS_ATV",
 	"PRODUCT_IS_AUTOMOTIVE",
 	"WITH_SU",
-	"WITH_GMS",
+	"AFTERLIFE_GAPPS",
 	"GMS_MAKEFILE",
 	"MAINLINE_MODULES_MAKEFILE",
 	"PRODUCT_SOONG_NAMESPACES",
@@ -184,34 +184,20 @@ var BannerVars = []string{
 func Banner(config Config, make_vars map[string]string) string {
 	b := &bytes.Buffer{}
 
-	fmt.Fprintln(b, "============================================")
+	fmt.Fprintln(b, "=======================================================")
+    fmt.Fprintln(b, " █████████████████████████████████████████████████████ ")
+	fmt.Fprintln(b, " ██▀▄─██▄─▄▄─█─▄─▄─█▄─▄▄─█▄─▄▄▀█▄─▄███▄─▄█▄─▄▄─█▄─▄▄─█ ")
+	fmt.Fprintln(b, " ██─▀─███─▄█████─████─▄█▀██─▄─▄██─██▀██─███─▄████─▄█▀█ ")
+	fmt.Fprintln(b, " ▀▄▄▀▄▄▀▄▄▄▀▀▀▀▄▄▄▀▀▄▄▄▄▄▀▄▄▀▄▄▀▄▄▄▄▄▀▄▄▄▀▄▄▄▀▀▀▄▄▄▄▄▀ ")
+	fmt.Fprintln(b, "=======================================================")
+
 	for _, name := range BannerVars {
 		if make_vars[name] != "" {
 			fmt.Fprintf(b, "%s=%s\n", name, make_vars[name])
 		}
 	}
-	if config.partialCompileRequested {
-		if partialCompile, ok := config.environ.Get("SOONG_PARTIAL_COMPILE"); ok {
-			// If we are only dumping variables, do not say that partial compile is disabled.
-			if config.disableUsePartialCompile && !config.isDumpVar {
-				fmt.Fprintf(b,
-					"SOONG_PARTIAL_COMPILE=%s # Inactive because of build arguments\n",
-					partialCompile)
-			} else {
-				fmt.Fprintf(b, "SOONG_PARTIAL_COMPILE=%s\n", partialCompile)
-			}
-		}
-	}
 
-	// Normally config.soongOnlyRequested already takes into account PRODUCT_SOONG_ONLY,
-	// except when doing `get_build_var report_config`, which is run during envsetup.
-	if config.skipKatiControlledByFlags {
-		fmt.Fprintf(b, "SOONG_ONLY=%t\n", config.soongOnlyRequested)
-	} else { // default for this product
-		fmt.Fprintf(b, "SOONG_ONLY=%t\n", make_vars["PRODUCT_SOONG_ONLY"] == "true")
-	}
-
-	fmt.Fprint(b, "============================================")
+	fmt.Fprintln(b, "=======================================================")
 
 	return b.String()
 }
